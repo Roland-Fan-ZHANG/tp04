@@ -3,37 +3,35 @@ package fr.uge.set;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public final class HashTableSet {
-
+public final class HashTableSet<T> {
     private static final int DEFAULT_CAPACITY = 16;
-    private Entry[] table;
+
+    @SuppressWarnings("unchecked")
+    private Entry<T>[] table = (Entry<T>[]) new Entry[DEFAULT_CAPACITY];
     private int size;
 
-    private record Entry(Object element, Entry next){}
+    private record Entry<T>(T element, Entry<T> next) {}
 
     public HashTableSet() {
-        table = new Entry[DEFAULT_CAPACITY];
         size = 0;
     }
 
-    public void add(Object element) {
+    public void add(T element) {
         Objects.requireNonNull(element);
-        if(size + 1 > table.length / 2){
+        if (size + 1 > table.length / 2) {
             resize();
         }
-
         int hash = element.hashCode();
         int index = hash & (table.length - 1);
 
-        Entry current = table[index];
+        Entry<T> current = table[index];
         while (current != null) {
             if (current.element.equals(element)) {
                 return;
             }
             current = current.next;
         }
-
-        table[index] = new Entry(element, table[index]);
+        table[index] = new Entry<>(element, table[index]);
         size++;
     }
 
@@ -41,9 +39,9 @@ public final class HashTableSet {
         return size;
     }
 
-    public void forEach(Consumer<Object> consumer) {
+    public void forEach(Consumer<? super T> consumer) {
         Objects.requireNonNull(consumer);
-        for (Entry entry : table) {
+        for (Entry<T> entry : table) {
             while (entry != null) {
                 consumer.accept(entry.element);
                 entry = entry.next;
@@ -51,12 +49,12 @@ public final class HashTableSet {
         }
     }
 
-    public boolean contains(Object element) {
+    public boolean contains(T element) {
         Objects.requireNonNull(element);
         int hash = element.hashCode();
         int index = hash & (table.length - 1);
 
-        Entry current = table[index];
+        Entry<T> current = table[index];
         while (current != null) {
             if (current.element.equals(element)) {
                 return true;
@@ -67,10 +65,11 @@ public final class HashTableSet {
     }
 
     private void resize() {
-        Entry[] oldTable = table;
-        table = new Entry[oldTable.length * 2];
+        @SuppressWarnings("unchecked")
+        Entry<T>[] oldTable = table;
+        table = (Entry<T>[]) new Entry[oldTable.length * 2];
         size = 0;
-        for (Entry entry : oldTable) {
+        for (Entry<T> entry : oldTable) {
             while (entry != null) {
                 reinsert(entry.element);
                 entry = entry.next;
@@ -78,10 +77,10 @@ public final class HashTableSet {
         }
     }
 
-    private void reinsert(Object element) {
+    private void reinsert(T element) {
         int hash = element.hashCode();
         int index = hash & (table.length - 1);
-        table[index] = new Entry(element, table[index]);
+        table[index] = new Entry<>(element, table[index]);
         size++;
     }
 }

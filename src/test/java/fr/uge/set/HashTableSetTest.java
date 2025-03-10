@@ -359,7 +359,7 @@ public class HashTableSetTest {
     }
   }
 
-/*
+
   @Nested
   class Q6 {
 
@@ -393,7 +393,7 @@ public class HashTableSetTest {
       set.forEach(element -> assertTrue(element.startsWith("f")));
     }
   }
-
+/*
   @Nested
   class Q7 {
 
