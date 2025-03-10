@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @SuppressWarnings("static-method")
 public class HashTableSetTest {
-  /*
+
   @Nested
   public class Q1 {
 
@@ -67,7 +67,7 @@ public class HashTableSetTest {
     }
   }
 
-//
+/*
   @Nested
   public class Q2 {
 
