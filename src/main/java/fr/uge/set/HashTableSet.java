@@ -38,4 +38,14 @@ public final class HashTableSet {
     public int size() {
         return size;
     }
+
+    public void forEach(Consumer<Object> consumer) {
+        Objects.requireNonNull(consumer);
+        for (Entry entry : table) {
+            while (entry != null) {
+                consumer.accept(entry.element);
+                entry = entry.next;
+            }
+        }
+    }
 }
