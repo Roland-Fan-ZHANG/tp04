@@ -48,4 +48,19 @@ public final class HashTableSet {
             }
         }
     }
+
+    public boolean contains(Object element) {
+        Objects.requireNonNull(element);
+        int hash = element.hashCode();
+        int index = hash & (table.length - 1);
+
+        Entry current = table[index];
+        while (current != null) {
+            if (current.element.equals(element)) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
 }

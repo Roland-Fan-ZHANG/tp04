@@ -219,7 +219,7 @@ public class HashTableSetTest {
     }
   }
 
-/*
+
   @Nested
   class Q4 {
 
